@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: freshrss/freshrss
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "1.16.2-alpine"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -22,6 +22,37 @@ serviceAccount:
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
+
+freshrss:
+  timezone: UTC
+  # pass a valid cron minute definition
+  cron_min: '13,43'
+  copy_log_to_syslog: true
+  copy_syslog_to_stderr: true
+  # change this to 'development' to increase logging and error display
+  freshrss_env:
+
+postgresql:
+  ## Whether to deploy a postgres server to satisfy the applications database requirements.
+  ## To use an external database set this to false and configure the externalDatabase parameters
+  enabled: false
+  postgresqlDatabase: "freshrss"
+  postgresqlUsername: "freshrss"
+  postgresqlPassword: "freshrss"
+  ## Enable persistence using Persistent Volume Claims
+  ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+  ##
+  persistence:
+    enabled: false
+    accessMode: ReadWriteOnce
+    size: 8Gi
+
+persistence:
+  enabled: true
+  # storageClass: "-"
+  # existingClaim: "ClaimName"
+  accessMode: ReadWriteOnce
+  size: 8Gi
 
 podAnnotations: {}
 
